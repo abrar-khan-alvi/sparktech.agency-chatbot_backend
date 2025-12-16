@@ -11,7 +11,7 @@ This project is a production-ready backend service for an AI chatbot. It acts as
 
 ---
 
-## 🛠 Technologies Used
+## Technologies Used
 *   **Backend Framework:** Python (Django REST Framework)
 *   **Database:** PostgreSQL (Production-grade relational DB)
 *   **Authentication:** JWT (via `simplejwt`)
@@ -21,7 +21,7 @@ This project is a production-ready backend service for an AI chatbot. It acts as
 
 ---
 
-## 📖 API Documentation
+## API Documentation
 
 You can test these endpoints using the `chatbot_api_collection.json` file included in this repository.
 
