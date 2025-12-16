@@ -10,7 +10,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username', 'password', 'email')
 
     def create(self, validated_data):
-        # This securely creates the user and hashes the password
         user = User.objects.create_user(
             username=validated_data['username'],
             password=validated_data['password'],

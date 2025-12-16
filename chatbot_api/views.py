@@ -6,12 +6,19 @@ from rest_framework.response import Response
 from .serializers import UserSerializer, ChatHistorySerializer
 from .models import ChatHistory
 from .utils import generate_rag_response
+from .tasks import run_email_background  # <-- This import works now!
 
-# 1. Registration View
+# 1. Registration View (With Email)
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        # Trigger Background Email
+        if user.email:
+            run_email_background(user.email, user.username)
 
 # 2. Chat View (The Brain)
 class ChatView(APIView):
