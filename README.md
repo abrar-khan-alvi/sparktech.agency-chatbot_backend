@@ -1,6 +1,6 @@
 # AI Chatbot Backend (RAG Pipeline)
 
-## 📌 Project Overview
+## Project Overview
 This project is a production-ready backend service for an AI chatbot. It acts as the "Brain" and "Memory" of a support system. Instead of relying solely on an AI model's training data, I implemented a **Retrieval-Augmented Generation (RAG)** pipeline to answer questions based on specific company documents.
 
 **Key Features:**
@@ -15,7 +15,7 @@ This project is a production-ready backend service for an AI chatbot. It acts as
 *   **Backend Framework:** Python (Django REST Framework)
 *   **Database:** PostgreSQL (Production-grade relational DB)
 *   **Authentication:** JWT (via `simplejwt`)
-*   **AI Model:** Google Gemini 1.5 Flash
+*   **AI Model:** Google Gemini 2.5 Flash
 *   **Vector Search:** FAISS (Facebook AI Similarity Search)
 *   **Task Management:** APScheduler (for Cron jobs) & Python Threading (for Async tasks)
 
@@ -48,7 +48,7 @@ You can test these endpoints using the `chatbot_api_collection.json` file includ
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. Clone and Install
 ```bash
@@ -69,8 +69,6 @@ Create a `.env` file in the root directory.
 
 ```ini
 SECRET_KEY=django-insecure-key-dev
-DEBUG=True
-
 # Database
 DB_NAME=chatbot_db
 DB_USER=chatbot_user
@@ -93,7 +91,7 @@ python manage.py runserver
 
 ---
 
-## 🧹 Background Task Implementation
+## Background Task Implementation
 
 I implemented **two** types of background tasks in `chatbot_api/tasks.py`:
 
@@ -101,7 +99,7 @@ I implemented **two** types of background tasks in `chatbot_api/tasks.py`:
 *   **Purpose:** Deletes chat history older than 30 days.
 *   **Tool:** `APScheduler`.
 *   **Frequency:** Runs automatically every 24 hours.
-*   **Verification:** You will see `⏰ Background Scheduler Started!` in the terminal when the server starts.
+*   **Verification:** You will see `Background Scheduler Started ()!` in the terminal when the server starts.
 
 **2. Async Task (The Mailman):**
 *   **Purpose:** Sends a welcome email after signup.
@@ -111,10 +109,10 @@ I implemented **two** types of background tasks in `chatbot_api/tasks.py`:
 
 ---
 
-## 📝 Answers to Technical Questions
+## Answers to Technical Questions
 
 ### 1. How did you integrate the RAG pipeline?
-I built a custom utility that loads the knowledge base text file. I used `google-generativeai` to create embeddings (`text-embedding-004`) and stored them in a **FAISS** index.
+I built a custom utility that loads the knowledge base text file. I used `google-generativeai` to create embeddings (`gemini-embedding-001`) and stored them in a **FAISS** index.
 When a user asks a question:
 1.  The question is converted to a vector.
 2.  FAISS finds the closest matching paragraph.
@@ -130,7 +128,7 @@ I used `simplejwt` for stateless authentication.
 *   **Tokens:** Users receive a short-lived Access Token (1 hour) and a long-lived Refresh Token (24 hours). This ensures security without forcing frequent logins.
 
 ### 4. How does the chatbot generate responses?
-It uses **Context-Aware Prompting**. I instruct the AI: *"You are a support assistant. Answer the user's question using ONLY the provided context."* This prevents the AI from "hallucinating" or making up facts that aren't in the document.
+It uses **Context-Aware Prompting**. I instruct the AI: *"You are a helpful customer support assistant.Use the following Context to answer the User's Question.If the answer is not in the Context, say "I don't have that information."* This prevents the AI from "hallucinating" or making up facts that aren't in the document.
 
 ### 5. How did you schedule background tasks?
 I used two different strategies to demonstrate flexibility:
@@ -139,10 +137,10 @@ I used two different strategies to demonstrate flexibility:
 
 ### 6. What testing strategies did you use?
 *   **Unit Testing:** I tested the `generate_rag_response` function in the Django Shell to ensure the Vector Search was finding the correct documents.
-*   **Integration Testing:** I used Thunder Client (exported as `chatbot_api_collection.json`) to test the full Signup -> Login -> Chat flow.
+*   **Integration Testing:** I used Postman (exported as `chatbot_api_collection.json`) to test the full Signup -> Login -> Chat flow.
 
 ### 7. What external services did you integrate?
-*   **Google Gemini API:** Selected for its speed (`gemini-1.5-flash`) and free tier.
+*   **Google Gemini API:** Selected for its speed (`gemini-2.5-flash`) and free tier.
 *   **FAISS:** Selected for local vector storage, removing the need for external services like Pinecone during development.
 
 ### 8. How would you expand this?
