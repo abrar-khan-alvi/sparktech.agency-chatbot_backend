@@ -5,7 +5,6 @@ __pycache__/
 # Virtual Environment (Crucial!)
 venv/
 env/
-.env
 
 # Database (If you were using SQLite)
 db.sqlite3
@@ -13,3 +12,9 @@ db.sqlite3
 # OS junk
 .DS_Store
 Thumbs.db  
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
+config.bat
+node_modules
